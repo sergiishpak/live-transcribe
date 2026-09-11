@@ -17,4 +17,18 @@ final class TranscriptTests: XCTestCase {
 
         XCTAssertEqual(transcript.displayText, "")
     }
+
+    func testStoppingLaterSessionAppendsToExistingTranscript() {
+        var transcript = Transcript(committed: "first call")
+        transcript.commitSession("second call")
+
+        XCTAssertEqual(transcript.displayText, "first call second call")
+    }
+
+    func testCommitPartialPreservesVisibleLiveText() {
+        var transcript = Transcript(committed: "first call", partial: " second call")
+
+        XCTAssertTrue(transcript.commitPartial())
+        XCTAssertEqual(transcript.displayText, "first call second call")
+    }
 }

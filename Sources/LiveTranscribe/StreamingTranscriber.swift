@@ -23,30 +23,34 @@ struct AudioBacklog: Equatable, Sendable {
 final class StreamingTranscriber {
     typealias Update = @MainActor (_ text: String, _ isFinal: Bool) -> Void
 
-    private var manager: StreamingEouAsrManager?
+    private var manager: StreamingUnifiedAsrManager?
     private var update: Update?
     private var onBacklogChange: (@MainActor (Bool) -> Void)?
     private var backlog = AudioBacklog()
+    private var acceptingUpdates = false
 
     func prepare(
         onUpdate: @escaping Update,
         onBacklogChange: @escaping @MainActor (Bool) -> Void
     ) async throws {
-        let manager = StreamingEouAsrManager(chunkSize: .ms160)
+        let manager = StreamingUnifiedAsrManager(
+            config: UnifiedConfig(leftFrames: 70, chunkFrames: 2, rightFrames: 2)
+        )
         self.update = onUpdate
         self.onBacklogChange = onBacklogChange
-        await manager.setPartialCallback { [weak self] text in
-            Task { @MainActor in self?.update?(text, false) }
-        }
-        await manager.setEouCallback { [weak self] text in
-            Task { @MainActor in self?.update?(text, true) }
+        await manager.setPartialTranscriptCallback { [weak self] text in
+            Task { @MainActor in
+                guard self?.acceptingUpdates == true else { return }
+                self?.update?(text, false)
+            }
         }
         try await manager.loadModels()
         self.manager = manager
+        acceptingUpdates = true
     }
 
     func append(_ buffer: AVAudioPCMBuffer) {
-        guard let manager else { return }
+        guard let manager, acceptingUpdates else { return }
         let seconds = Double(buffer.frameLength) / buffer.format.sampleRate
         backlog.enqueue(seconds: seconds)
         onBacklogChange?(backlog.isBehind)
@@ -64,24 +68,40 @@ final class StreamingTranscriber {
         }
     }
 
-    func finish() {
+    func finish(onComplete: @escaping @MainActor () -> Void) {
         guard let manager else { return }
+        acceptingUpdates = false
         Task {
+            defer {
+                self.acceptingUpdates = true
+                onComplete()
+            }
             do {
                 let text = try await manager.finish()
                 self.update?(text, true)
-                await manager.reset()
+                try await manager.reset()
             } catch {
                 self.update?("[Transcription error: \(error.localizedDescription)]", true)
             }
         }
     }
 
+    func clear() { resetSession() }
+
     func skipToLive() -> String {
         let marker = backlog.skipToLiveMarker
-        onBacklogChange?(false)
-        guard let manager else { return marker }
-        Task { await manager.reset() }
+        resetSession()
         return marker
+    }
+
+    private func resetSession() {
+        backlog = AudioBacklog()
+        onBacklogChange?(false)
+        acceptingUpdates = false
+        guard let manager else { return }
+        Task {
+            try? await manager.reset()
+            self.acceptingUpdates = true
+        }
     }
 }

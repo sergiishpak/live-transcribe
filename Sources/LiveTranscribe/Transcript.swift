@@ -30,6 +30,19 @@ struct Transcript: Equatable, Sendable {
         partial = ""
     }
 
+    mutating func commitSession(_ text: String) {
+        guard !text.isEmpty else { partial = ""; return }
+        committed = [committed, text].filter { !$0.isEmpty }.joined(separator: " ")
+        partial = ""
+    }
+
+    mutating func commitPartial() -> Bool {
+        guard !partial.isEmpty else { return false }
+        committed += partial
+        partial = ""
+        return true
+    }
+
     mutating func clear() {
         committed = ""
         partial = ""

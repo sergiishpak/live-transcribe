@@ -9,7 +9,7 @@ struct MainView: View {
             HStack {
                 Button(model.isRecording ? "Stop" : "Start") { model.toggleCapture() }
                     .keyboardShortcut(.return, modifiers: [])
-                    .disabled(model.status == .preparing)
+                    .disabled(model.status == .preparing || model.status == .finishing)
                 Button("Clear") { model.clear() }
                 Spacer()
                 Toggle("Always on Top", isOn: $model.alwaysOnTop)

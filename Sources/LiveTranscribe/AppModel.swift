@@ -3,6 +3,7 @@ import SwiftUI
 
 enum AppStatus: Equatable {
     case preparing
+    case finishing
     case ready
     case recording
     case failed(String)
@@ -10,6 +11,7 @@ enum AppStatus: Equatable {
     var label: String {
         switch self {
         case .preparing: "Preparing model…"
+        case .finishing: "Finishing…"
         case .ready: "Ready"
         case .recording: "Recording"
         case .failed(let message): message
@@ -35,6 +37,7 @@ final class AppModel: ObservableObject {
     private static let alwaysOnTopKey = "alwaysOnTop"
     private let transcriber = StreamingTranscriber()
     private let capture = SystemAudioCapture()
+    private var preserveVisibleTextOnStop = false
 
     init(prepare: Bool = true, transcript: Transcript = Transcript()) {
         self.transcript = transcript
@@ -60,7 +63,10 @@ final class AppModel: ObservableObject {
                     onUpdate: { [weak self] text, isFinal in
                         guard let self, !text.isEmpty else { return }
                         if isFinal {
-                            self.transcript.commit(text)
+                            if !self.preserveVisibleTextOnStop {
+                                self.transcript.commitSession(text)
+                            }
+                            self.preserveVisibleTextOnStop = false
                         } else {
                             self.transcript.showPartialTranscript(text)
                         }
@@ -77,12 +83,14 @@ final class AppModel: ObservableObject {
     func toggleCapture() {
         if isRecording {
             capture.stop()
-            transcriber.finish()
-            status = .ready
+            preserveVisibleTextOnStop = transcript.commitPartial()
+            status = .finishing
+            transcriber.finish { [weak self] in self?.status = .ready }
             return
         }
         guard case .ready = status else { return }
         do {
+            preserveVisibleTextOnStop = false
             try capture.start { [weak self] buffer in self?.transcriber.append(buffer) }
             status = .recording
         } catch {
@@ -90,7 +98,10 @@ final class AppModel: ObservableObject {
         }
     }
 
-    func clear() { transcript.clear() }
+    func clear() {
+        transcript.clear()
+        if isRecording { transcriber.clear() }
+    }
 
     func skipToLive() {
         transcript.commit(transcript.displayText + "\n" + transcriber.skipToLive())
