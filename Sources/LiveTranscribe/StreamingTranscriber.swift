@@ -25,10 +25,16 @@ final class StreamingTranscriber {
 
     private var manager: StreamingEouAsrManager?
     private var update: Update?
+    private var onBacklogChange: (@MainActor (Bool) -> Void)?
+    private var backlog = AudioBacklog()
 
-    func prepare(onUpdate: @escaping Update) async throws {
+    func prepare(
+        onUpdate: @escaping Update,
+        onBacklogChange: @escaping @MainActor (Bool) -> Void
+    ) async throws {
         let manager = StreamingEouAsrManager(chunkSize: .ms160)
         self.update = onUpdate
+        self.onBacklogChange = onBacklogChange
         await manager.setPartialCallback { [weak self] text in
             Task { @MainActor in self?.update?(text, false) }
         }
@@ -41,7 +47,14 @@ final class StreamingTranscriber {
 
     func append(_ buffer: AVAudioPCMBuffer) {
         guard let manager else { return }
+        let seconds = Double(buffer.frameLength) / buffer.format.sampleRate
+        backlog.enqueue(seconds: seconds)
+        onBacklogChange?(backlog.isBehind)
         Task {
+            defer {
+                self.backlog.dequeue(seconds: seconds)
+                self.onBacklogChange?(self.backlog.isBehind)
+            }
             do {
                 try await manager.appendAudio(buffer)
                 try await manager.processBufferedAudio()
@@ -62,5 +75,13 @@ final class StreamingTranscriber {
                 self.update?("[Transcription error: \(error.localizedDescription)]", true)
             }
         }
+    }
+
+    func skipToLive() -> String {
+        let marker = backlog.skipToLiveMarker
+        onBacklogChange?(false)
+        guard let manager else { return marker }
+        Task { await manager.reset() }
+        return marker
     }
 }

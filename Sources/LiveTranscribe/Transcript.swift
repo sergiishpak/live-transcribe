@@ -15,6 +15,16 @@ struct Transcript: Equatable, Sendable {
         partial = text.isEmpty ? "" : (committed.isEmpty ? text : " " + text)
     }
 
+    mutating func showPartialTranscript(_ text: String) {
+        guard !text.isEmpty else { partial = ""; return }
+        guard !committed.isEmpty, text.hasPrefix(committed) else {
+            partial = committed.isEmpty ? text : " " + text
+            return
+        }
+        let suffix = text.dropFirst(committed.count).trimmingCharacters(in: .whitespaces)
+        partial = suffix.isEmpty ? "" : " " + suffix
+    }
+
     mutating func commit(_ text: String) {
         committed = text
         partial = ""

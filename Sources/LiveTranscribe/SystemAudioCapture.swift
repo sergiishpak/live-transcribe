@@ -37,6 +37,7 @@ final class SystemAudioCapture: @unchecked Sendable {
     private var aggregateID = AudioObjectID(kAudioObjectUnknown)
     private var ioProcID: AudioDeviceIOProcID?
     private(set) var state: CaptureState = .idle
+    private(set) var sourceFormatDescription = ""
 
     func start(_ onBuffer: @escaping @MainActor (AVAudioPCMBuffer) -> Void) throws {
         stop()
@@ -53,12 +54,20 @@ final class SystemAudioCapture: @unchecked Sendable {
 
         do {
             let uid = try Self.tapUID(for: tapID)
-            var format = try Self.tapFormat(for: tapID)
-            guard let audioFormat = AVAudioFormat(streamDescription: &format) else {
-                throw SystemAudioCaptureError.format
-            }
+            let tapFormat = try Self.tapFormat(for: tapID)
             let aggregate = try Self.makeAggregate(tapUID: uid)
             aggregateID = aggregate
+            let defaultRate = Self.nominalSampleRate(of: aggregate) ?? tapFormat.mSampleRate
+            Self.setNominalSampleRate(of: aggregate, to: max(defaultRate, tapFormat.mSampleRate))
+            let actualRate = Self.nominalSampleRate(of: aggregate) ?? tapFormat.mSampleRate
+            guard var liveFormat = try Self.inputStreamFormats(of: aggregate).last else {
+                throw SystemAudioCaptureError.format
+            }
+            liveFormat.mSampleRate = actualRate
+            sourceFormatDescription = "\(Int(actualRate)) Hz, \(liveFormat.mChannelsPerFrame) channels"
+            guard let audioFormat = AVAudioFormat(streamDescription: &liveFormat) else {
+                throw SystemAudioCaptureError.format
+            }
 
             let status = AudioDeviceCreateIOProcIDWithBlock(&ioProcID, aggregateID, queue) {
                 _, input, _, _, _ in
@@ -134,6 +143,59 @@ final class SystemAudioCapture: @unchecked Sendable {
         let status = AudioHardwareCreateAggregateDevice(description as CFDictionary, &aggregateID)
         guard status == noErr else { throw SystemAudioCaptureError.aggregate(status) }
         return aggregateID
+    }
+
+    private static func nominalSampleRate(of deviceID: AudioObjectID) -> Double? {
+        var address = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyNominalSampleRate,
+            mScope: kAudioObjectPropertyScopeGlobal,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        var rate = 0.0
+        var size = UInt32(MemoryLayout<Double>.size)
+        guard AudioObjectGetPropertyData(deviceID, &address, 0, nil, &size, &rate) == noErr, rate > 0 else {
+            return nil
+        }
+        return rate
+    }
+
+    private static func setNominalSampleRate(of deviceID: AudioObjectID, to rate: Double) {
+        var address = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyNominalSampleRate,
+            mScope: kAudioObjectPropertyScopeGlobal,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        var rate = rate
+        _ = AudioObjectSetPropertyData(deviceID, &address, 0, nil, UInt32(MemoryLayout<Double>.size), &rate)
+    }
+
+    private static func inputStreamFormats(of deviceID: AudioObjectID) throws -> [AudioStreamBasicDescription] {
+        var address = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyStreams,
+            mScope: kAudioDevicePropertyScopeInput,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        var size: UInt32 = 0
+        guard AudioObjectGetPropertyDataSize(deviceID, &address, 0, nil, &size) == noErr else {
+            throw SystemAudioCaptureError.format
+        }
+        var streams = [AudioStreamID](repeating: 0, count: Int(size) / MemoryLayout<AudioStreamID>.stride)
+        guard !streams.isEmpty, streams.withUnsafeMutableBytes({
+            AudioObjectGetPropertyData(deviceID, &address, 0, nil, &size, $0.baseAddress!)
+        }) == noErr else { throw SystemAudioCaptureError.format }
+        return try streams.map { stream in
+            var formatAddress = AudioObjectPropertyAddress(
+                mSelector: kAudioStreamPropertyVirtualFormat,
+                mScope: kAudioObjectPropertyScopeGlobal,
+                mElement: kAudioObjectPropertyElementMain
+            )
+            var format = AudioStreamBasicDescription()
+            var formatSize = UInt32(MemoryLayout<AudioStreamBasicDescription>.size)
+            guard AudioObjectGetPropertyData(stream, &formatAddress, 0, nil, &formatSize, &format) == noErr else {
+                throw SystemAudioCaptureError.format
+            }
+            return format
+        }
     }
 
     private static func copyBuffer(
