@@ -3,7 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "LiveTranscribe",
-    platforms: [.macOS(.v14)],
+    platforms: [.macOS("14.2")],
     products: [.executable(name: "LiveTranscribe", targets: ["LiveTranscribe"])],
     dependencies: [
         .package(url: "https://github.com/FluidInference/FluidAudio.git", from: "0.15.3"),
