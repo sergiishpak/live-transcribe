@@ -5,8 +5,14 @@ let package = Package(
     name: "LiveTranscribe",
     platforms: [.macOS(.v14)],
     products: [.executable(name: "LiveTranscribe", targets: ["LiveTranscribe"])],
+    dependencies: [
+        .package(url: "https://github.com/FluidInference/FluidAudio.git", from: "0.15.3"),
+    ],
     targets: [
-        .executableTarget(name: "LiveTranscribe"),
+        .executableTarget(
+            name: "LiveTranscribe",
+            dependencies: [.product(name: "FluidAudio", package: "FluidAudio")]
+        ),
         .testTarget(name: "LiveTranscribeTests", dependencies: ["LiveTranscribe"]),
     ]
 )
