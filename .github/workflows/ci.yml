@@ -1,0 +1,31 @@
+name: Build and test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  macos:
+    name: Apple Silicon
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain
+        run: |
+          uname -m
+          swift --version
+      - name: Test
+        run: |
+          python3 -m unittest discover -s scripts/tests
+          swift test --force-resolved-versions
+      - name: Build and verify DMG
+        run: ./scripts/build-dmg.sh

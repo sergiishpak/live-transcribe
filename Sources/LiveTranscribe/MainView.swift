@@ -17,7 +17,7 @@ struct MainView: View {
             }
             .padding(12)
 
-            TranscriptTextView(text: model.transcript.displayText, followLive: $model.followLive)
+            TranscriptTextView(sentences: model.transcript.sentences, followLive: $model.followLive)
                 .frame(minWidth: 460, minHeight: 280)
 
             HStack {
@@ -50,6 +50,7 @@ private struct WindowOptions: NSViewRepresentable {
         DispatchQueue.main.async {
             guard let window = view.window else { return }
             window.setFrameAutosaveName("LiveTranscribeMainWindow")
+            window.isRestorable = false
             window.level = alwaysOnTop ? .floating : .normal
         }
     }

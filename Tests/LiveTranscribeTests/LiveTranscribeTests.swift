@@ -1,17 +1,17 @@
-import XCTest
+import Testing
 @testable import LiveTranscribe
 
-final class LiveTranscribeTests: XCTestCase {
-    func testPackageExposesAppName() {
-        XCTAssertEqual(appDisplayName, "Live Transcribe")
+struct LiveTranscribeTests {
+    @Test func testPackageExposesAppName() {
+        #expect(appDisplayName == "Live Transcribe")
     }
 
     @MainActor
-    func testClearRemovesTextWithoutChangingReadyState() {
+    @Test func testClearRemovesTextWithoutChangingReadyState() {
         let model = AppModel.forTesting(transcript: Transcript(committed: "hello"))
         model.clear()
 
-        XCTAssertEqual(model.transcript.displayText, "")
-        XCTAssertEqual(model.status, .ready)
+        #expect(model.transcript.displayText == "")
+        #expect(model.status == .ready)
     }
 }

@@ -1,4 +1,5 @@
 import Foundation
+import NaturalLanguage
 
 struct Transcript: Equatable, Sendable {
     private(set) var committed: String
@@ -10,6 +11,17 @@ struct Transcript: Equatable, Sendable {
     }
 
     var displayText: String { committed + partial }
+
+    var sentences: [String] {
+        let text = displayText
+        guard !text.isEmpty else { return [] }
+
+        let tokenizer = NLTokenizer(unit: .sentence)
+        tokenizer.string = text
+        return tokenizer.tokens(for: text.startIndex..<text.endIndex)
+            .map { String(text[$0]).trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+    }
 
     mutating func showPartial(_ text: String) {
         partial = text.isEmpty ? "" : (committed.isEmpty ? text : " " + text)

@@ -1,0 +1,803 @@
+{
+  "root": "text-processing-rs",
+  "version": "0.3.0",
+  "features": [
+    "ffi",
+    "fst-engine"
+  ],
+  "root_native_dependencies": [
+    "lazy_static",
+    "rustfst",
+    "flate2"
+  ],
+  "resolution_note": "Source-derived native graph for macOS with ffi,fst-engine enabled. Root dev/WASM dependencies excluded. Non-macOS lock edges and disabled zerocopy derive omitted. Build tools included separately for conservative upstream attribution, without claiming runtime inclusion. No Cargo compiler or upstream artifact SBOM available; exact linker retention not asserted.",
+  "crates": [
+    {
+      "name": "adler2",
+      "version": "2.0.1",
+      "source": "https://static.crates.io/crates/adler2/adler2-2.0.1.crate",
+      "sha256": "320119579fcad9c21884f5c4861d16174d0e06250625266f50fe6898340abefa",
+      "checksum_verified": true,
+      "license": "0BSD OR MIT OR Apache-2.0",
+      "repository": "https://github.com/oyvindln/adler2",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-0BSD",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [],
+      "role": "native-runtime"
+    },
+    {
+      "name": "anyhow",
+      "version": "1.0.103",
+      "source": "https://static.crates.io/crates/anyhow/anyhow-1.0.103.crate",
+      "sha256": "2a4385e2e34eb35d6b3efe798b9eb88096925d87726c0798709bf56d9ed84af3",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/dtolnay/anyhow",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [],
+      "role": "native-runtime"
+    },
+    {
+      "name": "autocfg",
+      "version": "1.5.1",
+      "source": "https://static.crates.io/crates/autocfg/autocfg-1.5.1.crate",
+      "sha256": "f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53",
+      "checksum_verified": true,
+      "license": "Apache-2.0 OR MIT",
+      "repository": "https://github.com/cuviper/autocfg",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [],
+      "role": "build-tool"
+    },
+    {
+      "name": "bimap",
+      "version": "0.6.3",
+      "source": "https://static.crates.io/crates/bimap/bimap-0.6.3.crate",
+      "sha256": "230c5f1ca6a325a32553f8640d31ac9b49f2411e901e427570154868b46da4f7",
+      "checksum_verified": true,
+      "license": "Apache-2.0/MIT",
+      "repository": "https://github.com/billyrieger/bimap-rs/",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE_APACHE",
+        "LICENSE_MIT"
+      ],
+      "lock_dependencies": [],
+      "role": "native-runtime"
+    },
+    {
+      "name": "bitflags",
+      "version": "2.13.0",
+      "source": "https://static.crates.io/crates/bitflags/bitflags-2.13.0.crate",
+      "sha256": "b4388bee8683e3d04af747c73422af53102d2bd24d9eadb6cbc100baef4b43f8",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/bitflags/bitflags",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [],
+      "role": "native-runtime"
+    },
+    {
+      "name": "cfg-if",
+      "version": "1.0.4",
+      "source": "https://static.crates.io/crates/cfg-if/cfg-if-1.0.4.crate",
+      "sha256": "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/rust-lang/cfg-if",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [],
+      "role": "native-runtime"
+    },
+    {
+      "name": "crc32fast",
+      "version": "1.5.0",
+      "source": "https://static.crates.io/crates/crc32fast/crc32fast-1.5.0.crate",
+      "sha256": "9481c1c90cbf2ac953f07c8d4a58aa3945c425b7185c9154d67a65e4230da511",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/srijs/rust-crc32fast",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "cfg-if"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "either",
+      "version": "1.16.0",
+      "source": "https://static.crates.io/crates/either/either-1.16.0.crate",
+      "sha256": "91622ff5e7162018101f2fea40d6ebf4a78bbe5a49736a2020649edf9693679e",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/rayon-rs/either",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [],
+      "role": "native-runtime"
+    },
+    {
+      "name": "flate2",
+      "version": "1.1.9",
+      "source": "https://static.crates.io/crates/flate2/flate2-1.1.9.crate",
+      "sha256": "843fba2746e448b37e26a819579957415c8cef339bf08564fe8b7ddbd959573c",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/rust-lang/flate2-rs",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "crc32fast",
+        "miniz_oxide"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "generic-array",
+      "version": "1.4.3",
+      "source": "https://static.crates.io/crates/generic-array/generic-array-1.4.3.crate",
+      "sha256": "c2e55f16dcf0e9c00efbe2e655ffe45fc98e7066b52bc92f8a79e64060a79351",
+      "checksum_verified": true,
+      "license": "MIT",
+      "repository": "https://github.com/fizyk20/generic-array.git",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE"
+      ],
+      "lock_dependencies": [
+        "rustversion",
+        "typenum"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "getrandom",
+      "version": "0.3.4",
+      "source": "https://static.crates.io/crates/getrandom/getrandom-0.3.4.crate",
+      "sha256": "899def5c37c4fd7b2664648c28120ecec138e4d395b459e5ca34f9cce2dd77fd",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/rust-random/getrandom",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "cfg-if",
+        "libc",
+        "r-efi 5.3.0",
+        "wasip2"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "itertools",
+      "version": "0.14.0",
+      "source": "https://static.crates.io/crates/itertools/itertools-0.14.0.crate",
+      "sha256": "2b192c782037fadd9cfa75548310488aabdbf3d2da73885b31bd0abd03351285",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/rust-itertools/itertools",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "either"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "lazy_static",
+      "version": "1.5.0",
+      "source": "https://static.crates.io/crates/lazy_static/lazy_static-1.5.0.crate",
+      "sha256": "bbd2bcb4c963f2ddae06a2efc7e9f3591312473c50c6685e1f298068316e66fe",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/rust-lang-nursery/lazy-static.rs",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [],
+      "role": "native-runtime"
+    },
+    {
+      "name": "libc",
+      "version": "0.2.186",
+      "source": "https://static.crates.io/crates/libc/libc-0.2.186.crate",
+      "sha256": "68ab91017fe16c622486840e4c83c9a37afeff978bd239b5293d61ece587de66",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/rust-lang/libc",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [],
+      "role": "native-runtime"
+    },
+    {
+      "name": "memchr",
+      "version": "2.8.3",
+      "source": "https://static.crates.io/crates/memchr/memchr-2.8.3.crate",
+      "sha256": "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98",
+      "checksum_verified": true,
+      "license": "Unlicense OR MIT",
+      "repository": "https://github.com/BurntSushi/memchr",
+      "files": [
+        "COPYING",
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [],
+      "role": "native-runtime"
+    },
+    {
+      "name": "minimal-lexical",
+      "version": "0.2.1",
+      "source": "https://static.crates.io/crates/minimal-lexical/minimal-lexical-0.2.1.crate",
+      "sha256": "68354c5c6bd36d73ff3feceb05efa59b6acb7626617f4962be322a825e61f79a",
+      "checksum_verified": true,
+      "license": "MIT/Apache-2.0",
+      "repository": "https://github.com/Alexhuszagh/minimal-lexical",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT",
+        "LICENSE.md"
+      ],
+      "lock_dependencies": [],
+      "role": "native-runtime"
+    },
+    {
+      "name": "miniz_oxide",
+      "version": "0.8.9",
+      "source": "https://static.crates.io/crates/miniz_oxide/miniz_oxide-0.8.9.crate",
+      "sha256": "1fa76a2c86f704bdb222d66965fb3d63269ce38518b83cb0575fca855ebb6316",
+      "checksum_verified": true,
+      "license": "MIT OR Zlib OR Apache-2.0",
+      "repository": "https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE",
+        "LICENSE-APACHE.md",
+        "LICENSE-MIT.md",
+        "LICENSE-ZLIB.md"
+      ],
+      "lock_dependencies": [
+        "adler2",
+        "simd-adler32"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "nom",
+      "version": "7.1.3",
+      "source": "https://static.crates.io/crates/nom/nom-7.1.3.crate",
+      "sha256": "d273983c5a657a70a3e8f2a01329822f3b8c8172b73826411a55751e404a0a4a",
+      "checksum_verified": true,
+      "license": "MIT",
+      "repository": "https://github.com/Geal/nom",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE"
+      ],
+      "lock_dependencies": [
+        "memchr",
+        "minimal-lexical"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "num-traits",
+      "version": "0.2.19",
+      "source": "https://static.crates.io/crates/num-traits/num-traits-0.2.19.crate",
+      "sha256": "071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/rust-num/num-traits",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "autocfg"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "ordered-float",
+      "version": "5.3.0",
+      "source": "https://static.crates.io/crates/ordered-float/ordered-float-5.3.0.crate",
+      "sha256": "b7d950ca161dc355eaf28f82b11345ed76c6e1f6eb1f4f4479e0323b9e2fbd0e",
+      "checksum_verified": true,
+      "license": "MIT",
+      "repository": "https://github.com/reem/rust-ordered-float",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "num-traits"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "ppv-lite86",
+      "version": "0.2.21",
+      "source": "https://static.crates.io/crates/ppv-lite86/ppv-lite86-0.2.21.crate",
+      "sha256": "85eae3c4ed2f50dcfe72643da4befc30deadb458a9b590d720cde2f2b1e97da9",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/cryptocorrosion/cryptocorrosion",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "zerocopy"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "proc-macro2",
+      "version": "1.0.106",
+      "source": "https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.106.crate",
+      "sha256": "8fd00f0bb2e90d81d1044c2b32617f68fcb9fa3bb7640c23e9c748e53fb30934",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/dtolnay/proc-macro2",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "unicode-ident"
+      ],
+      "role": "build-tool"
+    },
+    {
+      "name": "quote",
+      "version": "1.0.46",
+      "source": "https://static.crates.io/crates/quote/quote-1.0.46.crate",
+      "sha256": "dfbc457d0c7a0759a614551b11a6409e5951f6c7537be1f1b7682b9ae9230368",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/dtolnay/quote",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "proc-macro2"
+      ],
+      "role": "build-tool"
+    },
+    {
+      "name": "r-efi",
+      "version": "5.3.0",
+      "source": "https://static.crates.io/crates/r-efi/r-efi-5.3.0.crate",
+      "sha256": "69cdb34c158ceb288df11e18b4bd39de994f6657d83847bdffdbd7f346754b0f",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0 OR LGPL-2.1-or-later",
+      "repository": "https://github.com/r-efi/r-efi",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig"
+      ],
+      "lock_dependencies": [],
+      "role": "excluded",
+      "exclusion_reason": "UEFI-only getrandom backend"
+    },
+    {
+      "name": "rand",
+      "version": "0.9.4",
+      "source": "https://static.crates.io/crates/rand/rand-0.9.4.crate",
+      "sha256": "44c5af06bb1b7d3216d91932aed5265164bf384dc89cd6ba05cf59a35f5f76ea",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/rust-random/rand",
+      "files": [
+        "COPYRIGHT",
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "rand_chacha",
+        "rand_core"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "rand_chacha",
+      "version": "0.9.0",
+      "source": "https://static.crates.io/crates/rand_chacha/rand_chacha-0.9.0.crate",
+      "sha256": "d3022b5f1df60f26e1ffddd6c66e8aa15de382ae63b3a0c1bfc0e4d3e3f325cb",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/rust-random/rand",
+      "files": [
+        "COPYRIGHT",
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "ppv-lite86",
+        "rand_core"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "rand_core",
+      "version": "0.9.5",
+      "source": "https://static.crates.io/crates/rand_core/rand_core-0.9.5.crate",
+      "sha256": "76afc826de14238e6e8c374ddcc1fa19e374fd8dd986b0d2af0d02377261d83c",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/rust-random/rand",
+      "files": [
+        "COPYRIGHT",
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "getrandom 0.3.4"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "rustfst",
+      "version": "1.3.1",
+      "source": "https://static.crates.io/crates/rustfst/rustfst-1.3.1.crate",
+      "sha256": "3096239ad3664245480c50bf34a6ed45af5f40c0f6258d4b28a4c8082813a519",
+      "checksum_verified": true,
+      "license": "MIT/Apache-2.0",
+      "repository": "https://github.com/Garvys/rustfst",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE",
+        "LICENSE-APACHE",
+        "LICENSE-MIT",
+        "VCS-PROVENANCE.json"
+      ],
+      "lock_dependencies": [
+        "anyhow",
+        "bimap",
+        "bitflags",
+        "generic-array",
+        "itertools",
+        "nom",
+        "num-traits",
+        "ordered-float",
+        "rand",
+        "rand_chacha",
+        "serde",
+        "superslice"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "rustversion",
+      "version": "1.0.23",
+      "source": "https://static.crates.io/crates/rustversion/rustversion-1.0.23.crate",
+      "sha256": "cf54715a573b99ac80df0bc206da022bcd442c974952c7b9720069370852e21f",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/dtolnay/rustversion",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [],
+      "role": "build-tool"
+    },
+    {
+      "name": "serde",
+      "version": "1.0.228",
+      "source": "https://static.crates.io/crates/serde/serde-1.0.228.crate",
+      "sha256": "9a8e94ea7f378bd32cbbd37198a4a91436180c5bb472411e48b5ec2e2124ae9e",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/serde-rs/serde",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "serde_core",
+        "serde_derive"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "serde_core",
+      "version": "1.0.228",
+      "source": "https://static.crates.io/crates/serde_core/serde_core-1.0.228.crate",
+      "sha256": "41d385c7d4ca58e59fc732af25c3983b67ac852c1a25000afe1175de458b67ad",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/serde-rs/serde",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "serde_derive"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "serde_derive",
+      "version": "1.0.228",
+      "source": "https://static.crates.io/crates/serde_derive/serde_derive-1.0.228.crate",
+      "sha256": "d540f220d3187173da220f885ab66608367b6574e925011a9353e4badda91d79",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/serde-rs/serde",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "proc-macro2",
+        "quote",
+        "syn"
+      ],
+      "role": "build-tool"
+    },
+    {
+      "name": "simd-adler32",
+      "version": "0.3.9",
+      "source": "https://static.crates.io/crates/simd-adler32/simd-adler32-0.3.9.crate",
+      "sha256": "703d5c7ef118737c72f1af64ad2f6f8c5e1921f818cdcb97b8fe6fc69bf66214",
+      "checksum_verified": true,
+      "license": "MIT",
+      "repository": "https://github.com/mcountryman/simd-adler32",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE.md"
+      ],
+      "lock_dependencies": [],
+      "role": "native-runtime"
+    },
+    {
+      "name": "superslice",
+      "version": "1.0.0",
+      "source": "https://static.crates.io/crates/superslice/superslice-1.0.0.crate",
+      "sha256": "ab16ced94dbd8a46c82fd81e3ed9a8727dac2977ea869d217bcc4ea1f122e81f",
+      "checksum_verified": true,
+      "license": "Apache-2.0",
+      "repository": "https://github.com/alkis/superslice-rs",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENCE"
+      ],
+      "lock_dependencies": [],
+      "role": "native-runtime"
+    },
+    {
+      "name": "syn",
+      "version": "2.0.118",
+      "source": "https://static.crates.io/crates/syn/syn-2.0.118.crate",
+      "sha256": "1b9ae57f904213ebb649ce6895b8a66c66f0203b9319718f69a5612a065b1422",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/dtolnay/syn",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "proc-macro2",
+        "quote",
+        "unicode-ident"
+      ],
+      "role": "build-tool"
+    },
+    {
+      "name": "typenum",
+      "version": "1.20.1",
+      "source": "https://static.crates.io/crates/typenum/typenum-1.20.1.crate",
+      "sha256": "b6f5e870be6c3b371b77fe0ee0bafb859fa4964b4404c27de1d380043c4dda20",
+      "checksum_verified": true,
+      "license": "MIT OR Apache-2.0",
+      "repository": "https://github.com/paholg/typenum",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE",
+        "LICENSE-APACHE",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [],
+      "role": "native-runtime"
+    },
+    {
+      "name": "unicode-ident",
+      "version": "1.0.24",
+      "source": "https://static.crates.io/crates/unicode-ident/unicode-ident-1.0.24.crate",
+      "sha256": "e6e4313cd5fcd3dad5cafa179702e2b244f760991f45397d14d4ebf38247da75",
+      "checksum_verified": true,
+      "license": "(MIT OR Apache-2.0) AND Unicode-3.0",
+      "repository": "https://github.com/dtolnay/unicode-ident",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-MIT",
+        "LICENSE-UNICODE"
+      ],
+      "lock_dependencies": [],
+      "role": "build-tool"
+    },
+    {
+      "name": "wasip2",
+      "version": "1.0.4+wasi-0.2.12",
+      "source": "https://static.crates.io/crates/wasip2/wasip2-1.0.4+wasi-0.2.12.crate",
+      "sha256": "b67efb37e106e55ce722a510d6b5f9c17f083e5fc79afc2badeb12cc313d9487",
+      "checksum_verified": true,
+      "license": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "repository": "https://github.com/bytecodealliance/wasi-rs",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "wit-bindgen"
+      ],
+      "role": "excluded",
+      "exclusion_reason": "WASI-only getrandom backend"
+    },
+    {
+      "name": "wit-bindgen",
+      "version": "0.57.1",
+      "source": "https://static.crates.io/crates/wit-bindgen/wit-bindgen-0.57.1.crate",
+      "sha256": "1ebf944e87a7c253233ad6766e082e3cd714b5d03812acc24c318f549614536e",
+      "checksum_verified": true,
+      "license": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "repository": "https://github.com/bytecodealliance/wit-bindgen",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [],
+      "role": "excluded",
+      "exclusion_reason": "transitive WASI-only dependency"
+    },
+    {
+      "name": "zerocopy",
+      "version": "0.8.53",
+      "source": "https://static.crates.io/crates/zerocopy/zerocopy-0.8.53.crate",
+      "sha256": "75726053136156d419e285b9b7eddaaea9e3fea6ce32eed44a89901f0bd98de1",
+      "checksum_verified": true,
+      "license": "BSD-2-Clause OR Apache-2.0 OR MIT",
+      "repository": "https://github.com/google/zerocopy",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-BSD",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "zerocopy-derive"
+      ],
+      "role": "native-runtime"
+    },
+    {
+      "name": "zerocopy-derive",
+      "version": "0.8.53",
+      "source": "https://static.crates.io/crates/zerocopy-derive/zerocopy-derive-0.8.53.crate",
+      "sha256": "4714fd92cf900833d49538023a9b3915155210801d1c1169eba513b2addefd71",
+      "checksum_verified": true,
+      "license": "BSD-2-Clause OR Apache-2.0 OR MIT",
+      "repository": "https://github.com/google/zerocopy",
+      "files": [
+        "Cargo.toml",
+        "Cargo.toml.orig",
+        "LICENSE-APACHE",
+        "LICENSE-BSD",
+        "LICENSE-MIT"
+      ],
+      "lock_dependencies": [
+        "proc-macro2",
+        "quote",
+        "syn"
+      ],
+      "role": "excluded",
+      "exclusion_reason": "optional derive feature not enabled; cfg(any()) is false"
+    }
+  ],
+  "role_counts": {
+    "native-runtime": 30,
+    "build-tool": 7,
+    "excluded": 4
+  }
+}

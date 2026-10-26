@@ -1,19 +1,19 @@
-import XCTest
+import Testing
 @testable import LiveTranscribe
 
-final class BacklogTests: XCTestCase {
-    func testBacklogBecomesBehindAfterTwoSecondsOfAudio() {
+struct BacklogTests {
+    @Test func testBacklogBecomesBehindAfterTwoSecondsOfAudio() {
         var backlog = AudioBacklog()
         backlog.enqueue(seconds: 2.1)
 
-        XCTAssertTrue(backlog.isBehind)
+        #expect(backlog.isBehind)
     }
 
-    func testSkipToLiveClearsPendingAudioAndMarksGap() {
+    @Test func testSkipToLiveClearsPendingAudioAndMarksGap() {
         var backlog = AudioBacklog()
         backlog.enqueue(seconds: 3)
 
-        XCTAssertEqual(backlog.skipToLiveMarker, "[Skipped 3.0s to return to live]")
-        XCTAssertFalse(backlog.isBehind)
+        #expect(backlog.skipToLiveMarker == "[Skipped 3.0s to return to live]")
+        #expect(!backlog.isBehind)
     }
 }

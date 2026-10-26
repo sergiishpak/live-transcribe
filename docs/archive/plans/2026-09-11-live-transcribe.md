@@ -1,5 +1,7 @@
 # Live Transcribe for macOS Implementation Plan
 
+> Historical plan, retained for context rather than execution. Use the [current developer guide](../../DEVELOPMENT.md) for the implemented architecture and workflow.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build a local macOS app that turns live system audio into selectable English text with low display latency.
@@ -8,7 +10,7 @@
 
 **Tech Stack:** Swift 6, SwiftUI, AppKit, Core Audio, AVFoundation, Core ML, FluidAudio.
 
-**Spec:** `docs/superpowers/specs/2026-09-11-live-transcribe-design.md`
+**Historical spec:** [Original design](../specs/2026-09-11-live-transcribe-design.md)
 
 ## Global Constraints
 

@@ -1,5 +1,7 @@
 # Live Transcribe for macOS — Design
 
+> Historical design, retained for context. It describes an earlier model and intended behavior. Use the [current developer guide](../../DEVELOPMENT.md) for the implemented architecture.
+
 ## Goal
 
 Build a personal macOS utility that displays local, English-only transcription of live system audio quickly enough to copy passages into an agent chat while a call or video is playing.
